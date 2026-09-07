@@ -117,12 +117,12 @@ gulp.task('assets', function () {
         .pipe(browserSync.stream());
 });
 
-gulp.task('vendor', function() {
+gulp.task('vendor', function () {
     return gulp.src(npmDist(), { base: paths.src.node_modules })
-      .pipe(gulp.dest(paths.temp.vendor));
+        .pipe(gulp.dest(paths.temp.vendor));
 });
 
-gulp.task('serve', gulp.series('scss', 'html', 'index', 'assets', 'vendor', function() {
+gulp.task('serve', gulp.series('scss', 'html', 'index', 'assets', 'vendor', function () {
     browserSync.init({
         server: paths.temp.base
     });
@@ -147,8 +147,8 @@ gulp.task('minify:css', function () {
     return gulp.src([
         paths.dist.css + '/volt.css'
     ])
-    .pipe(cleanCss())
-    .pipe(gulp.dest(paths.dist.css))
+        .pipe(cleanCss())
+        .pipe(gulp.dest(paths.dist.css))
 });
 
 // Minify Html
@@ -278,14 +278,14 @@ gulp.task('copy:dev:assets', function () {
 });
 
 // Copy node_modules to vendor
-gulp.task('copy:dist:vendor', function() {
+gulp.task('copy:dist:vendor', function () {
     return gulp.src(npmDist(), { base: paths.src.node_modules })
-      .pipe(gulp.dest(paths.dist.vendor));
+        .pipe(gulp.dest(paths.dist.vendor));
 });
 
-gulp.task('copy:dev:vendor', function() {
+gulp.task('copy:dev:vendor', function () {
     return gulp.src(npmDist(), { base: paths.src.node_modules })
-      .pipe(gulp.dest(paths.dev.vendor));
+        .pipe(gulp.dest(paths.dev.vendor));
 });
 
 gulp.task('build:dev', gulp.series('clean:dev', 'copy:dev:css', 'copy:dev:html', 'copy:dev:html:index', 'copy:dev:assets', 'beautify:css', 'copy:dev:vendor'));

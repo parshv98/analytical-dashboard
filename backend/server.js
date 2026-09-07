@@ -41,6 +41,12 @@ app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'API is running successfully!' });
 });
 
+// 404 Fallback
+const path = require('path');
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, '../src/pages/examples/404.html'));
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
