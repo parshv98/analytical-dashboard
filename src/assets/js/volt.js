@@ -17,7 +17,34 @@
 
 "use strict";
 const d = document;
+
+// --- Global Auth Check ---
+const currentPath = window.location.pathname;
+const isAuthPage = currentPath.includes('sign-in.html') || currentPath.includes('sign-up.html') || currentPath.includes('forgot-password.html') || currentPath.includes('reset-password.html') || currentPath.includes('lock.html') || currentPath.includes('404.html') || currentPath.includes('500.html');
+
+if (!localStorage.getItem('token') && !isAuthPage) {
+    if (currentPath.includes('/dashboard/') || currentPath.includes('/transactions.html') || currentPath.includes('/settings.html')) {
+        window.location.href = '../examples/sign-in.html';
+    } else {
+        window.location.href = './pages/examples/sign-in.html'; // root fallback
+    }
+}
+// --------------------------
+
 d.addEventListener("DOMContentLoaded", function (event) {
+    // Wire up global logout button
+    const logoutBtn = d.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            if (currentPath.includes('/dashboard/') || currentPath.includes('/transactions.html') || currentPath.includes('/settings.html')) {
+                window.location.href = '../examples/sign-in.html';
+            } else {
+                window.location.href = './pages/examples/sign-in.html';
+            }
+        });
+    }
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {

@@ -3,7 +3,16 @@ const router = express.Router();
 
 // User Registration
 router.post('/register', (req, res) => {
-    res.json({ success: true, message: "User registered successfully" });
+    res.json({
+        success: true,
+        message: "User registered successfully",
+        token: "jwt_token_here",
+        user: {
+            id: 2,
+            email: "newuser@example.com",
+            name: "New User"
+        }
+    });
 });
 
 // User Login
