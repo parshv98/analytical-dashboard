@@ -381,4 +381,50 @@ d.addEventListener("DOMContentLoaded", function (event) {
         fetchDashboardKPIs();
     }
 
+    // Connect to Backend API for Transactions List
+    async function fetchTransactions() {
+        try {
+            const res = await fetch('http://localhost:5000/api/transactions');
+            const result = await res.json();
+            const tbody = d.getElementById('transactions-table-body');
+
+            if (result.success && tbody) {
+                tbody.innerHTML = ''; // Clear hardcoded transactions
+
+                result.data.forEach(tx => {
+                    const statusClass = tx.type === 'income' ? 'text-success' : 'text-warning';
+                    const statusText = tx.type === 'income' ? 'Paid' : 'Due';
+                    const tr = d.createElement('tr');
+                    tr.innerHTML = `
+                        <td><a href="#" class="fw-bold">${tx.id}</a></td>
+                        <td><span class="fw-normal">${tx.description}</span></td>
+                        <td><span class="fw-normal">${tx.date}</span></td>
+                        <td><span class="fw-normal">${tx.date}</span></td>
+                        <td><span class="fw-bold">$${tx.amount.toFixed(2)}</span></td>
+                        <td><span class="fw-bold ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="icon icon-sm">
+                                        <span class="fas fa-ellipsis-h icon-dark"></span>
+                                    </span>
+                                </button>
+                                <div class="dropdown-menu py-0">
+                                    <a class="dropdown-item rounded-top" href="#"><span class="fas fa-eye me-2"></span>View Details</a>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        } catch (err) {
+            console.error("Failed to fetch transactions:", err);
+        }
+    }
+
+    if (d.getElementById('transactions-table-body')) {
+        fetchTransactions();
+    }
+
 });
