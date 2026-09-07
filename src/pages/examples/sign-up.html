@@ -58,6 +58,23 @@
                             <form id="signup-form" action="#" class="mt-4">
                                 <!-- Form -->
                                 <div class="form-group mb-4">
+                                    <label for="name">Your Full Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <svg class="icon icon-xs text-gray-600" fill="currentColor"
+                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="John Smith" id="name"
+                                            autofocus required>
+                                    </div>
+                                </div>
+                                <!-- End of Form -->
+                                <!-- Form -->
+                                <div class="form-group mb-4">
                                     <label for="email">Your Email</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">
@@ -71,7 +88,7 @@
                                             </svg>
                                         </span>
                                         <input type="email" class="form-control" placeholder="example@company.com"
-                                            id="email" autofocus required>
+                                            id="email" required>
                                     </div>
                                 </div>
                                 <!-- End of Form -->
@@ -182,19 +199,30 @@
                 signupForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
 
+                    const name = document.getElementById('name').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirm_password').value;
+
+                    if (password !== confirmPassword) {
+                        alert('Passwords do not match.');
+                        return;
+                    }
+
                     try {
                         const res = await fetch('http://localhost:5000/api/auth/register', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email: "test@example.com", password: "password" })
+                            body: JSON.stringify({ name, email, password })
                         });
                         const data = await res.json();
 
                         if (data.success && data.token) {
                             localStorage.setItem('token', data.token);
+                            localStorage.setItem('user', JSON.stringify(data.user));
                             window.location.href = '../dashboard/dashboard.html';
                         } else {
-                            alert('Registration failed. Please check your credentials.');
+                            alert(data.message || 'Registration failed. Please try again.');
                         }
                     } catch (err) {
                         console.error('Error during registration', err);

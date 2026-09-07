@@ -155,7 +155,7 @@
               <img class="avatar rounded-circle" alt="Image placeholder"
                 src="@@path/assets/img/team/profile-picture-3.jpg">
               <div class="media-body ms-2 text-dark align-items-center d-none d-lg-block">
-                <span class="mb-0 font-small fw-bold text-gray-900">Bonnie Green</span>
+                <span id="topbar-username" class="mb-0 font-small fw-bold text-gray-900">Bonnie Green</span>
               </div>
             </div>
           </a>
@@ -169,7 +169,7 @@
               </svg>
               My Profile
             </a>
-            <a class="dropdown-item d-flex align-items-center" href="#">
+            <a class="dropdown-item d-flex align-items-center" href="@@path/pages/settings.html">
               <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -211,3 +211,19 @@
     </div>
   </div>
 </nav>
+
+<script>
+  // Dynamically set the logged-in user's name from localStorage
+  (function () {
+    try {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        const nameEl = document.getElementById('topbar-username');
+        if (nameEl && user.name) {
+          nameEl.textContent = user.name;
+        }
+      }
+    } catch (e) { /* silently ignore parse errors */ }
+  })();
+</script>
